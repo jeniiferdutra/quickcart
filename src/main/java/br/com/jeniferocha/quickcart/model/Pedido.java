@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_pedidos")
@@ -19,6 +20,10 @@ public class Pedido {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    List<ItemPedido> itens;
 
     public Pedido(){}
 
@@ -59,5 +64,13 @@ public class Pedido {
 
     public void setStatus(Status situacao) {
         this.status = situacao;
+    }
+
+    public List<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<ItemPedido> itens) {
+        this.itens = itens;
     }
 }
