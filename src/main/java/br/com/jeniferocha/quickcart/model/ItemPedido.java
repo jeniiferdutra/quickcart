@@ -14,11 +14,11 @@ public class ItemPedido {
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)// define o nome da coluna da chave estrangeira
-    Pedido pedido;
+    private Pedido pedido;
 
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
-    Produto produto;
+    private Produto produto;
 
     @Column(nullable = false)
     private Integer quantidade;

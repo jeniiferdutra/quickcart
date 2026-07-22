@@ -21,9 +21,10 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // remover itens excluídos da lista do banco
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
 
-    List<ItemPedido> itens;
+    private List<ItemPedido> itens;
 
     public Pedido(){}
 
@@ -32,6 +33,11 @@ public class Pedido {
         this.dataCriacao = dataCriacao;
         this.valorTotal = valorTotal;
         this.status = status;
+    }
+
+    public void adicionarItem(ItemPedido item) {
+        this.itens.add(item);
+        item.setPedido(this);
     }
 
     public Long getId() {
