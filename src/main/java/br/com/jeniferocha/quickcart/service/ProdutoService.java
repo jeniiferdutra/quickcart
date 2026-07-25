@@ -6,6 +6,8 @@ import br.com.jeniferocha.quickcart.model.Produto;
 import br.com.jeniferocha.quickcart.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProdutoService {
 
@@ -29,5 +31,17 @@ public class ProdutoService {
                 produtoSalvo.getPreco(),
                 produtoSalvo.getQuantidadeEstoque()
         );
+    }
+
+    public List<ProdutoResponseDTO> listarProdutos() {
+        return produtoRepository.findAll()
+                .stream()
+                .map(produto -> new ProdutoResponseDTO(
+                        produto.getId(),
+                        produto.getNome(),
+                        produto.getPreco(),
+                        produto.getQuantidadeEstoque()
+                ))
+                .toList();
     }
 }
