@@ -44,4 +44,41 @@ public class ProdutoService {
                 ))
                 .toList();
     }
+
+    public ProdutoResponseDTO buscarPorId(Long id) { // caso o item não exista
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com o ID: " + id));
+
+        return new ProdutoResponseDTO(
+                produto.getId(),
+                produto.getNome(),
+                produto.getPreco(),
+                produto.getQuantidadeEstoque()
+        );
+    }
+
+    public ProdutoResponseDTO atualizarProduto(Long id, ProdutoRequestDTO dto) {
+        Produto produto = produtoRepository.findById(id) // busca o item, se não achar, lança uma exceção
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com o ID: " + id));
+
+        produto.setNome(dto.nome()); // att os dados do objeto com os novos valores
+        produto.setPreco(dto.preco());
+        produto.setQuantidadeEstoque(dto.quantidadeEstoque());
+
+        Produto produtoAtualizado = produtoRepository.save(produto); // salva no banco
+
+        return new ProdutoResponseDTO( // dados convertidos em dto
+                produtoAtualizado.getId(),
+                produtoAtualizado.getNome(),
+                produtoAtualizado.getPreco(),
+                produtoAtualizado.getQuantidadeEstoque()
+        );
+    }
+
+    public void deletarProduto(Long id) {
+        Produto produto = produtoRepository.findById(id) // se o item existe no banco antes de tentar deletar
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado com o ID: " + id));
+
+        produtoRepository.delete(produto); // apaga o registro do banco
+    }
 }
