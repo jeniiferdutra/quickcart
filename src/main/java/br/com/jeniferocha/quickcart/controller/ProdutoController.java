@@ -31,4 +31,25 @@ public class ProdutoController {
         List<ProdutoResponseDTO> produtos = produtoService.listarProdutos();
         return ResponseEntity.ok(produtos); // Retorna HTTP 200 (OK)
     }
+
+    @GetMapping("/{id}") // busca apenas o que já está salvo no banco de dados
+    public ResponseEntity<ProdutoResponseDTO> buscarPorId(@PathVariable Long id) {
+        ProdutoResponseDTO produto = produtoService.buscarPorId(id); // busca via Service
+        return ResponseEntity.ok(produto); // retorna HTTP 200 (OK) com o json do produto
+    }
+
+    @PutMapping("/{id}") // atualiza os dados do item
+    public ResponseEntity<ProdutoResponseDTO> atualizarProduto(
+            @PathVariable Long id,
+            @RequestBody @Valid ProdutoRequestDTO dto) {
+
+        ProdutoResponseDTO produtoAtualizado = produtoService.atualizarProduto(id, dto);
+        return ResponseEntity.ok(produtoAtualizado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarProduto(@PathVariable Long id) {
+        produtoService.deletarProduto(id);
+        return ResponseEntity.noContent().build(); // http 204 -> área de resposta estará vazia
+    }
 }
